@@ -1,46 +1,79 @@
+import google.generativeai as genai
+import os
+from dotenv import load_dotenv
 import whisper
-import sounddevice as sd
-import numpy as np
-import time
-import threading
+from flask import Flask, request, jsonify
+from gtts import gTTS
+from io import BytesIO
+model = whisper.load_model("turbo")
+load_dotenv()
 
-# Carica il modello Whisper
-model = whisper.load_model("base")
-
-# Parametri di configurazione
-SAMPLERATE = 16000
-CHANNELS = 1
-BLOCK_SIZE = 1024
-BUFFER_SIZE = SAMPLERATE * 2
-
-# Variabile per gestire l'interruzione
-stop_recording = False
+GEMINI_API_KEY = os.getenv('GEMINI_API_KEY')
+genai.configure(api_key="GEMINI_API_KEY")
+gemini_model = genai.GenerativeModel("gemini-1.5-flash")
 
 
-# Funzione per acquisire e trascrivere audio in tempo reale
-def record_and_transcribe():
-    print("Inizia a parlare... Premi 'q' per fermare.")
-    audio_buffer = np.zeros((BUFFER_SIZE,))
-
-    while not stop_recording:
-        audio_chunk = sd.rec(BLOCK_SIZE, samplerate=SAMPLERATE, channels=CHANNELS, dtype='int16')
-        sd.wait()
-
-        audio_buffer[:BLOCK_SIZE] = audio_chunk.flatten()
-
-        try:
-            result = model.transcribe(audio_buffer)
-            print("Trascrizione:", result["text"])
-        except Exception as e:
-            print("Errore durante la trascrizione:", e)
-
-        time.sleep(0.5)
+app = Flask(__name__)
 
 
-# Thread per eseguire la registrazione e trascrizione in background
-thread = threading.Thread(target=record_and_transcribe)
-thread.daemon = True
-thread.start()
+@app.route("/transcribe", methods=["POST"])
+def transcribe_route():
+    audio = request.files["audio"]
+    result = transcribe(audio)
+    return jsonify({"transcription": result})
 
-while True:
-    time.sleep(0.1)
+
+# define a json, if the transcription doesnt contain one or more
+# of the key in the json, return an audio for the missing key(s)
+# use tts and a LLM to check if some of the key are missing
+# if the transcription is correct, return a json with the transcription
+@app.route("/validate", methods=["POST"])
+def validate_route():
+    audio = request.files["audio"]
+    result = transcribe(audio)
+    return jsonify({"transcription": result})
+
+
+def missing_keys(transcription):
+    expected_json = {
+        "name": "",
+        "surname": "",
+        "fiscal_code": "",
+        "address": "",
+        "city": "",
+        "zip": "",
+        "appointment_time": "",
+        "date": "",
+        "destination": "",
+        }
+    prompt = f"""
+        You are a helper that checks whether a transcription includes all the following details:
+        {expected_json}
+    
+        The transcription is: "{transcription}"
+    
+        Please check if all the possible values of the keys ('name', 'age', 'city') are mentioned in the transcription.
+        If any keys are missing, list them, with this syntax: if 'name' and 'city' are missing, write 'name, city'.
+        If only one key is missing, write the name of the key.
+    """
+    gemini_response = gemini_model.generate_content(prompt) 
+    print(gemini_response.text)
+    return gemini_response.text.split(", ")
+
+
+def transcribe(audio):
+    return model.transcribe(audio)
+
+
+# Function to generate audio for the missing keys
+def generate_audio_for_missing_keys(missing_keys):
+    if not missing_keys:
+        return None  # No missing keys, no audio
+    missing_message = "The following keys are missing: " + ", ".join(missing_keys)
+    tts = gTTS(text=missing_message, lang='de')
+    audio_io = BytesIO()
+    tts.save(audio_io)
+    audio_io.seek(0)
+    
+    return audio_io
+
