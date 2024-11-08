@@ -1,8 +1,5 @@
 import json
 from typing import List, Optional
-from datetime import datetime, time, timedelta
-
-from app import options
 
 class Vehicle:
     def __init__(self, id, start_location, capacity_walking, capacity_wheelchair, capacity_stretcher, capacity_white_cross, max_capacity):
@@ -36,11 +33,11 @@ class Vehicle:
 
 
 class Request:
-    def __init__(self, id, accompanied, pickup_location, destionation, appointment_time):
+    def __init__(self, id, accompanied, pickup_location, destination, appointment_time):
         self.id = id
         self.accompanied = accompanied
         self.pickup_location = pickup_location
-        self.destionation = destionation
+        self.destination = destination
         self.appointment_time = appointment_time
 
     @classmethod
@@ -49,30 +46,9 @@ class Request:
             id=data["id"],
             accompanied=data["accompanied"],
             pickup_location=data["pickup_location"],
-            destionation=data["destionation"],
+            destination=data["destination"],
             appointment_time=data["appointment_time"]
         )
-
-
-    def to_shipment(self):
-        time_windows = [
-            (datetime.combine(datetime.min, self.appointment_time) - datetime.min - timedelta(minutes=options.tw[0])) // timedelta(seconds=1),
-            (datetime.combine(datetime.min, self.appointment_time) - datetime.min - timedelta(minutes=options.tw[1])) // timedelta(seconds=1),
-        ]
-
-
-        return {
-            "amount": [1],
-            "delivery": {
-                "id": self.id,
-                "location": self.destionation,
-                "time_windows": [time_windows]
-            },
-            "pickup": {
-                "id": self.id,
-                "location": self.pickup_location
-            }
-        }
 
 # ======================================================================================================================
 # Classes for Vroom output
