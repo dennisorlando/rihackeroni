@@ -21,6 +21,10 @@ def calc_route():
             vehicle_list = [Vehicle.from_dict(v) for v in data["vehicle_list"]]
         if "patient_list" in data:
             request_list = [Request.from_dict(p) for p in data["patient_list"]]
+
+        //TODO insert vroom function here
+        //TODO return the result of the vroom function
+
         return jsonify({"message": "Received and saved data!"}), 200
     else:
         return jsonify({"error": "Error: the request doesn't contain json"}), 404
