@@ -4,7 +4,7 @@ from configs import Configs
 from vroom.vroom import Calculation
 
 app = Flask(__name__)
-configs = Configs([30, 10])
+configs = Configs([30 * 60, 10 * 60])
 
 
 @app.route('/')
@@ -14,7 +14,7 @@ def index():
 
 @app.route('/routes', methods=['POST'])
 def calc_route():
-    if not request.is_json: 
+    if not request.is_json:
         return jsonify({"error": "Request must be JSON"}), 400
     data = request.get_json()
 

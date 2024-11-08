@@ -6,8 +6,8 @@ import requests as r
 
 def request_to_shipment(request: Request, tw: list[int]):
         time_windows = [
-            (datetime.combine(datetime.min, request.appointment_time) - datetime.min - timedelta(minutes=tw[0])) // timedelta(seconds=1),
-            (datetime.combine(datetime.min, request.appointment_time) - datetime.min - timedelta(minutes=tw[1])) // timedelta(seconds=1),
+            request.appointment_time - tw[0],
+            request.appointment_time - tw[1],
         ]
 
         return {
