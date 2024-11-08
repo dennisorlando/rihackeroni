@@ -125,7 +125,6 @@ class TestVroomSerialization(unittest.TestCase):
         print("\nParsed JSON:")
         print(parsed_result)
 
-
     def test_round_trip(self):
         """Test that deserialization followed by serialization returns the original JSON"""
         vroom_output = VroomOutput.from_json(self.mock_json)
