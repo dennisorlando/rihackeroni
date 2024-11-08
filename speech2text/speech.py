@@ -3,7 +3,6 @@ import sounddevice as sd
 import numpy as np
 import time
 import threading
-import keyboard  # Modulo per rilevare la pressione dei tasti
 
 # Carica il modello Whisper
 model = whisper.load_model("base")
@@ -43,10 +42,5 @@ thread = threading.Thread(target=record_and_transcribe)
 thread.daemon = True
 thread.start()
 
-# Controlla continuamente se premi il tasto 'q' per fermare l'ascolto
 while True:
-    if keyboard.is_pressed('q'):  # Premi 'q' per fermare l'ascolto
-        stop_recording = True
-        print("Ascolto interrotto.")
-        break
     time.sleep(0.1)

@@ -46,7 +46,7 @@ def process_map():
                     client["dst"] = v
             client["src"] = f["geometry"]["coordinates"]
             client["name"] = props["name"]
-                    
+
             clients[props["name"]] = client
 
     # check if dst is in dsts
@@ -74,7 +74,7 @@ def process_map():
 def root():
     with open("output.json", "w") as f:
         dump(process_map(), f)
-    
+
     return jsonify(loads(check_output(["./vroom.sh", "-i", "output.json", "-g", "--host", "10.69.0.2", "--port", "car:5001"])))
 
 if __name__ == "__main__":
