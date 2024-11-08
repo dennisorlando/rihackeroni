@@ -1,7 +1,7 @@
 import unittest
 import json
 
-from classes import Summary, Route, Step, VroomOutput
+from vroom_classes import Summary, Route, Step, VroomOutput
 
 class TestVroomSerialization(unittest.TestCase):
 
@@ -124,7 +124,6 @@ class TestVroomSerialization(unittest.TestCase):
         parsed_result = json.loads(json_result)
         print("\nParsed JSON:")
         print(parsed_result)
-
 
     def test_round_trip(self):
         """Test that deserialization followed by serialization returns the original JSON"""

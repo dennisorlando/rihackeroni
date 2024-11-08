@@ -22,8 +22,8 @@ def calc_route():
         if "patient_list" in data:
             request_list = [Request.from_dict(p) for p in data["patient_list"]]
 
-        //TODO insert vroom function here
-        //TODO return the result of the vroom function
+        # TODO insert vroom function here
+        # TODO return the result of the vroom function
 
         return jsonify({"message": "Received and saved data!"}), 200
     else:
