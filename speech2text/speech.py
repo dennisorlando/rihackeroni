@@ -5,7 +5,6 @@ import whisper
 from flask import Flask, request, jsonify
 from gtts import gTTS
 from io import BytesIO
-
 model = whisper.load_model("turbo")
 load_dotenv()
 
@@ -77,3 +76,4 @@ def generate_audio_for_missing_keys(missing_keys):
     audio_io.seek(0)
     
     return audio_io
+

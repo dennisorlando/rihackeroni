@@ -1,5 +1,81 @@
 import json
 from typing import List, Optional
+from datetime import datetime, time, timedelta
+
+from app import options
+
+class Vehicle:
+    def __init__(self, id, start_location, capacity_walking, capacity_wheelchair, capacity_stretcher, capacity_white_cross, max_capacity):
+        self.id = id
+        self.start_location = start_location
+        self.capacity_walking = capacity_walking
+        self.capacity_wheelchair = capacity_wheelchair
+        self.capacity_stretcher = capacity_stretcher
+        self.capacity_white_cross = capacity_white_cross
+        self.max_capacity = max_capacity
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            id=data["id"],
+            start_location=data["start_location"],
+            capacity_walking=data["capacity_walking"],
+            capacity_wheelchair=data["capacity_wheelchair"],
+            capacity_stretcher=data["capacity_stretcher"],
+            capacity_white_cross=data["capacity_white_cross"],
+            max_capacity=data["max_capacity"]
+        )
+
+    def to_vroom_dict(self):
+        return {
+            "id": self.id,
+            "start": self.start_location,
+            "end": self.start_location,
+            "capacity": [self.capacity_walking, self.capacity_wheelchair, self.capacity_stretcher, self.capacity_white_cross]
+        }
+
+
+class Request:
+    def __init__(self, id, accompanied, pickup_location, destionation, appointment_time):
+        self.id = id
+        self.accompanied = accompanied
+        self.pickup_location = pickup_location
+        self.destionation = destionation
+        self.appointment_time = appointment_time
+
+    @classmethod
+    def from_dict(cls, data: dict):
+        return cls(
+            id=data["id"],
+            accompanied=data["accompanied"],
+            pickup_location=data["pickup_location"],
+            destionation=data["destionation"],
+            appointment_time=data["appointment_time"]
+        )
+
+
+    def to_shipment(self):
+        time_windows = [
+            (datetime.combine(datetime.min, self.appointment_time) - datetime.min - timedelta(minutes=options.tw[0])) // timedelta(seconds=1),
+            (datetime.combine(datetime.min, self.appointment_time) - datetime.min - timedelta(minutes=options.tw[1])) // timedelta(seconds=1),
+        ]
+
+
+        return {
+            "amount": [1],
+            "delivery": {
+                "id": self.id,
+                "location": self.destionation,
+                "time_windows": [time_windows]
+            },
+            "pickup": {
+                "id": self.id,
+                "location": self.pickup_location
+            }
+        }
+
+# ======================================================================================================================
+# Classes for Vroom output
 
 class Violation:
     def __init__(self, cause: str, duration: Optional[int] = None):
@@ -15,7 +91,7 @@ class Violation:
 
 
 class Step:
-    def __init__(self, step_type: str, arrival: int, duration: int, setup: int, service: int, waiting_time: int, 
+    def __init__(self, step_type: str, arrival: int, duration: int, setup: int, service: int, waiting_time: int,
                  violations: Optional[List[Violation]], description: Optional[str] = None, location: Optional[List[float]] = None,
                  location_index: Optional[int] = None, task_id: Optional[int] = None, load: Optional[List[int]] = None,
                  distance: Optional[int] = None):
@@ -72,7 +148,7 @@ class Step:
 class Route:
     def __init__(self, vehicle: int, steps: List[Step], cost: int, setup: int, service: int, duration: int,
                  waiting_time: int, priority: int, violations: Optional[List[Violation]] = None,
-                 delivery: Optional[int] = None, pickup: Optional[int] = None, description: Optional[str] = None, 
+                 delivery: Optional[int] = None, pickup: Optional[int] = None, description: Optional[str] = None,
                  geometry: Optional[str] = None, distance: Optional[int] = None):
         if all(isinstance(s, Step) for s in steps):
             self.steps = steps
@@ -132,8 +208,8 @@ class Route:
 
 
 class Summary:
-    def __init__(self, cost: int, routes: int, unassigned: int, setup: int, service: int, duration: int, 
-                 waiting_time: int, priority: int, delivery: Optional[int] = None, pickup: Optional[int] = None, 
+    def __init__(self, cost: int, routes: int, unassigned: int, setup: int, service: int, duration: int,
+                 waiting_time: int, priority: int, delivery: Optional[int] = None, pickup: Optional[int] = None,
                  distance: Optional[int] = None):
         self.cost = cost
         self.routes = routes

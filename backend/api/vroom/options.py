@@ -1,5 +1,6 @@
 
 # Options for the calculation that will be executed by Vroom
-class Option:
-    def __init__(self):
-        pass
+class Options:
+    def __init__(self, tw):
+        self.tw = tw
+        return
