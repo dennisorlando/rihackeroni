@@ -270,7 +270,7 @@ class VroomOutput:
             unassigned = json.dumps(self.unassigned)
             summary = json.dumps(self.summary)
 
-            return json.dumps({"code": self.code, "error": self.error, "summary": summary, "routes": routes, "unassigned": unassigned})
+            return json.dumps({"summary": summary, "routes": routes, "unassigned": unassigned})
 
 
     @staticmethod
