@@ -82,3 +82,30 @@ main {
     align-items: center;
     flex-direction: column;
 }
+
+
+.fields-container {
+    margin-top: 20px;
+}
+
+.field-wrapper {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+.field-wrapper label {
+    font-weight: bold;
+}
+
+.field-wrapper input {
+    width: 100%;
+    padding: 8px;
+    margin-top: 5px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.field-wrapper input:disabled {
+    background-color: #f5f5f5;
+}

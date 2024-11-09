@@ -53,19 +53,20 @@ async function sendAudio(audioFile) {
 
         const result = await response.json();  // Parsing the response as JSON
 
+
+        // Ottieni il contenitore dei campi
+        const fieldsContainer = document.getElementById('fieldsContainer');
+        fieldsContainer.innerHTML = ''; // Svuota il contenitore prima di riempirlo con nuovi dati
+
         if (result.status === "incomplete") {
             // Caso con chiavi mancanti
             resultsDiv.innerHTML = `
                 <p>The following keys are missing: ${result.missing_keys.join(", ")}</p>
                 `;
 
-            if (result.audio) {
-                // Decodifica e carica l'audio nel player
-                const audioBlob = base64ToBlob(result.audio, "audio/mp3");
-                const audioURL = URL.createObjectURL(audioBlob);
-                audioPlayer.src = audioURL;
-                audioPlayer.style.display = "block"; // Mostra il player audio
-            }
+             displayFields(result.missing_keys, true); // Mostra i campi mancanti
+
+
 
         } else if (result.status === "complete") {
             // Caso con tutte le chiavi presenti
@@ -73,8 +74,9 @@ async function sendAudio(audioFile) {
                 <p>All keys are present.</p>
                 <pre>${JSON.stringify(result.data, null, 2)}</pre>
                 `;
-            audioPlayer.style.display = "none"; // Nascondi il player audio
+           displayFields(result.data, false); // Mostra i dati completi
         }
+ audioPlayer.style.display = "none"; 
 
     } catch (error) {
         console.error('Error sending audio:', error);
@@ -95,4 +97,34 @@ function base64ToBlob(base64, mimeType) {
         byteArrays.push(new Uint8Array(byteNumbers));
     }
     return new Blob(byteArrays, { type: mimeType });
+}
+
+function displayFields(data, isMissing) {
+    const fieldsContainer = document.getElementById('fieldsContainer');
+
+    // Itera su ogni chiave nel dato ricevuto
+    for (let key in data) {
+        if (data.hasOwnProperty(key)) {
+            // Crea un box per ogni campo
+            const fieldWrapper = document.createElement('div');
+            fieldWrapper.classList.add('field-wrapper');
+
+            // Crea un label per il campo
+            const label = document.createElement('label');
+            label.setAttribute('for', key);
+            label.textContent = key;
+
+            // Crea un box di input (vuoto per i campi mancanti, compilato per i dati completi)
+            const input = document.createElement('input');
+            input.type = 'text';
+            input.id = key;
+            input.name = key;
+            input.value = isMissing ? '' : data[key]; // Se mancante, lascia il campo vuoto, altrimenti metti il valore
+
+            // Aggiungi il label e l'input nel contenitore
+            fieldWrapper.appendChild(label);
+            fieldWrapper.appendChild(input);
+            fieldsContainer.appendChild(fieldWrapper);
+        }
+    }
 }
