@@ -22,5 +22,6 @@ def calc_route():
     requests = [Request.from_dict(r) for r in data["requests"]]
 
     response = Calculation(vehicles, requests, configs).calculate()
+    json_out = response.serialize_vroom_output()
 
-    return jsonify(response.to_dict())
+    return json_out
