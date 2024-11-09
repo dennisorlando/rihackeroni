@@ -1,0 +1,37 @@
+[
+    {
+      "id": 101,
+      "accompanied": false,
+      "pickup_location": [11.154962, 46.0655017],
+      "destination": [11.154385, 46.065608],
+      "appointment_time": 32400
+    },
+    {
+      "id": 102,
+      "accompanied": true,
+      "pickup_location": [11.1102267, 46.1397416],
+      "destination": [11.154385, 46.065608],
+      "appointment_time": 36000
+    },
+    {
+      "id": 103,
+      "accompanied": false,
+      "pickup_location": [11.0600067, 46.0727819],
+      "destination": [11.154385, 46.065608],
+      "appointment_time": 39600
+    },
+    {
+      "id": 104,
+      "accompanied": true,
+      "pickup_location": [11.2406747, 46.0605291],
+      "destination": [11.154385, 46.065608],
+      "appointment_time": 43200
+    },
+    {
+      "id": 105,
+      "accompanied": false,
+      "pickup_location": [11.23021287087526, 46.655945450000004],
+      "destination": [11.154385, 46.065608],
+      "appointment_time": 46800
+    }
+]
