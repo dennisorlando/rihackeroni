@@ -255,6 +255,20 @@ class VroomOutput:
             "unassigned": self.unassigned
         }
 
+    @classmethod
+    def serialize_vroom_output(self):
+        if self.code == 1:
+            return json.dumps({"error": f"{self.error}"})
+        elif self.code == 2:
+            return json.dumps({"error": f"{self.error}"})
+        elif self.code == 3:
+            return json.dumps({"error": f"{self.error}"})
+        else:
+            routes = json.dumps(self.routes)
+            unassigned = json.dumps(self.unassigned)
+            summary = json.dumps(self.summary)
+        
+
     @staticmethod
     def from_json(json_str: str):
         data = json.loads(json_str)
