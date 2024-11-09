@@ -16,6 +16,7 @@ import 'package:latlong2/latlong.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 
+List<Vehicle> vehicles = [];
 
 void main() {
   runApp(const MyApp());
@@ -75,12 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    final List<Vehicle> vehicles = [];
-    final List<Request> requests = [];
-
     // URL to fetch the encoded polyline
     const String polylineUrl = 'http://10.69.0.2:5000';  // Replace with your actual URL
 
+    vehicles = loadVehiclesFromJson("./vehicles.json");
     this.vehicles = loadVehiclesFromJson("./vehicles.json");
     this.requests = loadRequestsFromJson("./requests.json");
 

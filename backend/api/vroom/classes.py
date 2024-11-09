@@ -1,6 +1,7 @@
 import json
 from typing import List, Optional
 
+
 class Vehicle:
     def __init__(self, id, start_location, capacity_walking, capacity_wheelchair, capacity_stretcher, capacity_white_cross, max_capacity):
         self.id = id
@@ -53,6 +54,7 @@ class Request:
 
 # ======================================================================================================================
 # Classes for Vroom output
+
 
 class Violation:
     def __init__(self, cause: str, duration: Optional[int] = None):
@@ -243,10 +245,10 @@ class VroomOutput:
     @classmethod
     def from_dict(cls, data: dict):
         return cls(
-            code=data["code"],
-            error=data["error"],
-            summary=Summary.from_dict(data["summary"]),
-            routes=data["routes"],
+            code=data.get("code"),
+            error=data.get("error"),
+            summary=data.get("summary"),
+            routes=data.get("routes"),
             unassigned=data.get("unassigned", [])
         )
 
@@ -266,12 +268,11 @@ class VroomOutput:
         elif self.code == 3:
             return json.dumps({"error": f"{self.error}"})
         else:
-            routes = json.dumps(self.routes)
+            routes = json.dumps([r.to_dict() for r in self.routes])
             unassigned = json.dumps(self.unassigned)
             summary = json.dumps(self.summary)
 
             return json.dumps({"summary": summary, "routes": routes, "unassigned": unassigned})
-
 
     @staticmethod
     def from_json(json_str: str):
@@ -280,6 +281,3 @@ class VroomOutput:
 
     def to_json(self):
         return json.dumps(self.to_dict(), indent=4)
-
-
-
