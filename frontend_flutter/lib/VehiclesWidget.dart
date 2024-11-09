@@ -14,10 +14,10 @@ class VehiclesWidget extends StatefulWidget {
 
 class VehiclesWidgetState extends State<VehiclesWidget> {
 
+  final List<bool> viewed = List.generate(vehicles.length, (index) => true);
+
   @override
   Widget build(BuildContext context) {
-
-    final List<bool> viewed = List.generate(vehicles.length, (index) => true);
 
     return SizedBox(
         width: 200,
@@ -31,6 +31,12 @@ class VehiclesWidgetState extends State<VehiclesWidget> {
                   trailing: Checkbox(value: viewed[index], onChanged: (bool? value) {
                     setState(() {
                       viewed[index] = !viewed[index];
+                      rendered_polylines = routes.entries.where((v) => viewed[v.key-1]).map((r) {
+                        return r.value.geometry;
+                      }).toList();
+                      homepage.setState(() {
+                        
+                      });
                     });
                     },
                     activeColor: vehicle_colors[index],
