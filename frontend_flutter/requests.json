@@ -7,7 +7,7 @@
       46.741223727484794
     ],
     "destination": [11.151959253966936, 46.67683901813979],
-    "appointment_time": 3600
+    "appointment_time": 36000
   },
   {
     "id": 2,
@@ -17,7 +17,7 @@
       46.52455030288709
     ],
     "destination": [11.151959253966936, 46.67683901813979],
-    "appointment_time": 3600
+    "appointment_time": 36000
   },
   {
     "id": 3,
@@ -27,7 +27,7 @@
       46.750476013570534
     ],
     "destination": [10.773401296894775,46.62802049281427],
-    "appointment_time": 3600
+    "appointment_time": 36000
   },
   {
     "id": 4,
@@ -37,14 +37,14 @@
       46.57745621041806
     ],
     "destination": [11.310435130324294,46.498391322349136],
-    "appointment_time": 3600
+    "appointment_time": 36000
   },
   {
     "id": 5,
     "accompanied": true,
     "pickup_location": [11.335332047685398,46.48854082637186],
     "destination": [11.310435130324294,46.498391322349136],
-    "appointment_time": 3600
+    "appointment_time": 36000
   },
   {
     "id": 6,
@@ -54,7 +54,7 @@
       46.527793508585205
     ],
     "destination": [11.310435130324294,46.498391322349136],
-    "appointment_time": 3600
+    "appointment_time": 36000
   },
   {
     "id": 7,
@@ -64,7 +64,7 @@
       46.65093876332651
     ],
     "destination": [11.310435130324294,46.498391322349136],
-    "appointment_time": 3600
+    "appointment_time": 36000
   },
   {
     "id": 8,
@@ -74,6 +74,6 @@
       46.856211783410515
     ],
     "destination": [11.425731949589817,46.89808486651722],
-    "appointment_time": 3600
+    "appointment_time": 36000
   }
 ]

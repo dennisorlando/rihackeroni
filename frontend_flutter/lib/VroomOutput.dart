@@ -1,4 +1,20 @@
 import 'dart:convert';
+import 'dart:math';
+import 'dart:ui';
+
+import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:latlong2/latlong.dart';
+
+Polyline fromString(String s){
+  var points = PolylinePoints().decodePolyline(s);
+  List<LatLng> yay = points.map((p) => LatLng(p.latitude, p.longitude)).toList();
+  return Polyline(
+      points: yay,
+      strokeWidth: 5.0,
+      color: Color((Random().nextDouble() * 0xFFFFFFFF).toInt())
+  );
+}
 
 class VroomRoute {
   int vehicle;
@@ -13,7 +29,7 @@ class VroomRoute {
   List<int>? delivery;
   List<int>? pickup;
   String? description;
-  String? geometry;
+  Polyline geometry;
   int? distance;
 
   VroomRoute({
@@ -29,12 +45,18 @@ class VroomRoute {
     this.delivery,
     this.pickup,
     this.description,
-    this.geometry,
+    required this.geometry,
     this.distance,
   });
 
   // Factory constructor for creating a new Route instance from a map (JSON)
   factory VroomRoute.fromJson(Map<String, dynamic> json) {
+
+    print("uh?");
+    print(jsonEncode(json));
+    print("aaaaaaa");
+    Polyline geo = fromString(json['geometry']);
+
     return VroomRoute(
       vehicle: json['vehicle'] as int,
       steps: (json['steps'] as List).map((e) => Step.fromJson(e)).toList(),
@@ -50,7 +72,7 @@ class VroomRoute {
       delivery: json['delivery'] != null ? List<int>.from(json['delivery']) : null,
       pickup: json['pickup'] != null ? List<int>.from(json['pickup']) : null,
       description: json['description'] as String?,
-      geometry: json['geometry'] as String?,
+      geometry:  geo,
       distance: json['distance'] as int?,
     );
   }

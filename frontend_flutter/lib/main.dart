@@ -24,9 +24,9 @@ List<Color> vehicle_colors = [];
 List<Request> requests = [];
 List<Marker> markers = [];
 VroomOutput ?output;
+List<Polyline> rendered_polylines = [];
 
-Map<int, VroomRoute> ?routes;
-List<Polyline> polylineCoordinates = [];
+Map<int, VroomRoute> routes = {};
 
 void main() {
   runApp(const MyApp());
@@ -112,6 +112,12 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       );
     }));
+    markers.addAll(vehicles.map((v) {
+      return Marker(
+          point: v.startLocation,
+          child: Icon(Icons.car_crash_rounded),
+      );
+    }));
 
     Map<String, dynamic> jsonData = {
       'requests': requests,
@@ -127,31 +133,13 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             body: jsonEncode(jsonData),
         );
+        print(response.body);
 
         if (response.statusCode == 200) {
           output = VroomOutput.fromJson(jsonDecode(response.body));
 
           routes = {for (var route in output!.routes) route.vehicle: route};
 
-          List<String> geometries = output?.routes.map((route) => route.geometry ?? "").toList() ?? [];
-
-          List<List<LatLng>> lines = geometries.map((geo) {
-            List<LatLng> coord = PolylinePoints().decodePolyline(geo).map((e) {
-              return LatLng(e.latitude, e.longitude);
-            }).toList();
-            return coord;
-          }).toList();
-          List<Polyline> polylines = lines.map((line) {
-            return Polyline(
-              points: line,
-              strokeWidth: 2.0,
-              color: Color(0xFF0000FF),
-              pattern: StrokePattern.dotted(),
-            );
-          }).toList();
-
-          // Update the UI with the decoded coordinates
-          polylineCoordinates = polylines;
         }
         else {
           // print(response.body);
@@ -176,7 +164,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'noi.rihackeroni.techpark',
               ),
-              PolylineLayer(polylines: polylineCoordinates),
+              PolylineLayer(polylines: rendered_polylines),
               MarkerLayer(markers: markers),
             ],
           ),
@@ -185,8 +173,11 @@ class _MyHomePageState extends State<MyHomePage> {
             right: 16,
             child: FloatingActionButton(
               onPressed: () {
-                setState(() {
-                  fetchAndDecodePolyline();
+                setState(() async {
+                  await fetchAndDecodePolyline();
+                  rendered_polylines = routes.entries.map((r) {
+                    return r.value.geometry;
+                  }).toList();
                   update();
                 });
               },
