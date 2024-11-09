@@ -32,7 +32,7 @@ void main() {
   runApp(const MyApp());
 }
 
-late Function updateMap;
+late _MyHomePageState homepage;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -80,7 +80,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    updateMap = setState;
+    homepage = this;
 
     // URL to fetch the encoded polyline
     const String polylineUrl = 'http://10.69.0.2:8000/routes';  // Replace with your actual URL
@@ -191,7 +191,9 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 setState(() {
                   fetchAndDecodePolyline();
-                  updateMap();
+                  homepage.setState(() {
+
+                  });();
                 });
               },
               child: Icon(Icons.sync),
