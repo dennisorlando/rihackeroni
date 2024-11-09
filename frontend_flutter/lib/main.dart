@@ -17,10 +17,15 @@ import 'package:latlong2/latlong.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 
+import 'VroomOutput.dart';
+
 List<Vehicle> vehicles = [];
 List<Color> vehicle_colors = [];
 List<Request> requests = [];
 List<Marker> markers = [];
+VroomOutput ?output;
+
+Map<int, VroomRoute> ?routes;
 List<Polyline> polylineCoordinates = [];
 
 void main() {
@@ -119,8 +124,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Function to fetch and decode the polyline
     Future<void> fetchAndDecodePolyline() async {
-
-      try {
         final response = await http.post(
             Uri.parse(polylineUrl),
             headers: <String, String>{
@@ -130,10 +133,12 @@ class _MyHomePageState extends State<MyHomePage> {
         );
 
         if (response.statusCode == 200) {
+          output = VroomOutput.fromJson(jsonDecode(response.body));
 
-          List<String> geometries = List<String>.from(
-            jsonDecode(response.body)['routes'].map((route) => route['geometry'])
-          );
+          routes = {for (var route in output!.routes) route.vehicle: route};
+
+          List<String> geometries = output?.routes.map((route) => route.geometry ?? "").toList() ?? [];
+
           List<List<LatLng>> lines = geometries.map((geo) {
             List<LatLng> coord = PolylinePoints().decodePolyline(geo).map((e) {
               return LatLng(e.latitude, e.longitude);
@@ -153,12 +158,8 @@ class _MyHomePageState extends State<MyHomePage> {
           polylineCoordinates = polylines;
         }
         else {
-          print(response.body);
+          // print(response.body);
         }
-      } catch (e) {
-        throw e;
-        print('Error fetching polyline data: $e');
-      }
     }
 
 
