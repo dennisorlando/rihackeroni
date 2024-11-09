@@ -1,3 +1,4 @@
+import 'dart:collection';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
@@ -7,6 +8,7 @@ import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:frontend_flutter/Vehicle.dart';
 import 'package:frontend_flutter/VehiclesWidget.dart';
 import 'package:frontend_flutter/Request.dart';
+import 'package:frontend_flutter/VroomOutput.dart';
 import 'package:frontend_flutter/dropdown_button.dart';
 import 'package:google_maps_polyline/google_maps_polyline.dart';
 import 'package:http/http.dart' as http;
@@ -14,6 +16,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_geojson/flutter_map_geojson.dart';
 import 'package:frontend_flutter/carousel.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:frontend_flutter/VroomOutput.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 
@@ -21,6 +24,9 @@ List<Vehicle> vehicles = [];
 List<Color> vehicle_colors = [];
 List<Request> requests = [];
 List<Marker> markers = [];
+VroomOutput ?output;
+
+Map<int, VroomRoute> ?routes;
 
 void main() {
   runApp(const MyApp());
@@ -84,6 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
     vehicles = loadVehiclesFromJson("./vehicles.json");
     requests = loadRequestsFromJson("./requests.json");
     vehicle_colors = vehicles.map((v) => Color((Random().nextDouble() * 0xFFFFFFFF).toInt())).toList();
+
     markers = requests.map((r) {
       return Marker(
         point: r.pickupLocation,
@@ -111,8 +118,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
     // Function to fetch and decode the polyline
     Future<void> fetchAndDecodePolyline() async {
-
-      try {
         final response = await http.post(
             Uri.parse(polylineUrl),
             headers: <String, String>{
@@ -122,10 +127,12 @@ class _MyHomePageState extends State<MyHomePage> {
         );
 
         if (response.statusCode == 200) {
+          output = VroomOutput.fromJson(jsonDecode(response.body));
 
-          List<String> geometries = List<String>.from(
-            jsonDecode(response.body)['routes'].map((route) => route['geometry'])
-          );
+          routes = {for (var route in output!.routes) route.vehicle: route};
+          
+          List<String> geometries = output?.routes.map((route) => route.geometry ?? "").toList() ?? [];
+
           List<List<LatLng>> lines = geometries.map((geo) {
             List<LatLng> coord = PolylinePoints().decodePolyline(geo).map((e) {
               return LatLng(e.latitude, e.longitude);
@@ -145,12 +152,8 @@ class _MyHomePageState extends State<MyHomePage> {
           polylineCoordinates = polylines;
         }
         else {
-          print(response.body);
+          // print(response.body);
         }
-      } catch (e) {
-        throw e;
-        print('Error fetching polyline data: $e');
-      }
     }
 
 
