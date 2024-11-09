@@ -1,5 +1,15 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_polyline_points/flutter_polyline_points.dart';
+import 'package:frontend_flutter/Vehicle.dart';
+import 'package:frontend_flutter/VehiclesWidget.dart';
+import 'package:frontend_flutter/dropdown_button.dart';
+import 'package:google_maps_polyline/google_maps_polyline.dart';
+import 'package:http/http.dart' as http;
 import 'package:flutter_map/flutter_map.dart';
+import 'package:flutter_map_geojson/flutter_map_geojson.dart';
 import 'package:frontend_flutter/carousel.dart';
 import 'package:latlong2/latlong.dart';
 
@@ -13,6 +23,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -27,15 +38,6 @@ class MyApp extends StatelessWidget {
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
   final String title;
 
   @override
@@ -43,33 +45,91 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
 
-  void _incrementCounter() {
+  List<Polyline> polylineCoordinates = [];  // To store decoded polyline coordinates
+
+  void update(){
     setState(() {
-      _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Stack(children: [
-      FlutterMap(
-        options: MapOptions(
-          initialCenter: LatLng(51.509364, -0.128928),
-          initialZoom: 9.2,
-        ),
+
+    // URL to fetch the encoded polyline
+    const String polylineUrl = 'http://10.69.0.2:5000';  // Replace with your actual URL
+
+    // Function to fetch and decode the polyline
+    Future<void> fetchAndDecodePolyline() async {
+      try {
+        final response = await http.get(Uri.parse(polylineUrl));
+
+        if (response.statusCode == 200) {
+
+          List<String> geometries = List<String>.from(
+            jsonDecode(response.body)['routes'].map((route) => route['geometry'])
+          );
+          List<List<LatLng>> lines = geometries.map((geo) {
+            List<LatLng> coord = PolylinePoints().decodePolyline(geo).map((e) {
+              return LatLng(e.latitude, e.longitude);
+            }).toList();
+            return coord;
+          }).toList();
+          List<Polyline> polylines = lines.map((line) {
+            return Polyline(
+              points: line,
+              strokeWidth: 2.0,
+              color: Color(0xFF0000FF),
+            );
+          }).toList();
+
+          // Update the UI with the decoded coordinates
+          polylineCoordinates = polylines;
+        }
+      } catch (e) {
+        throw e;
+        print('Error fetching polyline data: $e');
+      }
+    }
+
+
+    GeoJsonParser myGeoJson = GeoJsonParser();
+    String testgj = File("./test_geojson").readAsStringSync();
+    myGeoJson.parseGeoJsonAsString(testgj);
+
+    return Scaffold(
+      body: Stack(
         children: [
-          TileLayer( // Display map tiles from any source
-            urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-            userAgentPackageName: 'noi.rihackeroni.techpark',
-          ),],
-        ),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [CarouselExample()],
+          FlutterMap(
+            options: MapOptions(
+              initialCenter: LatLng(46.6695547, 11.1594185),
+              initialZoom: 9.2,
+            ),
+            children: [
+              TileLayer( // Display map tiles from any source
+                urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                userAgentPackageName: 'noi.rihackeroni.techpark',
+              ),
+              PolylineLayer(polylines: polylineCoordinates),
+            ],
+          ),
+          Positioned(
+            top: 16,
+            right: 16,
+            child: FloatingActionButton(
+              onPressed: () {
+                setState(() {
+                  fetchAndDecodePolyline();
+                  update();
+                });
+              },
+              child: Icon(Icons.sync),
+            ),
+          ),
+          LocationPickerWidget(),
+          Vehicles(),
+        ],
       ),
-      ],
     );
   }
 }
