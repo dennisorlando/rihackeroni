@@ -268,11 +268,11 @@ class VroomOutput:
         elif self.code == 3:
             return json.dumps({"error": f"{self.error}"})
         else:
-            routes = json.dumps([r.to_dict() for r in self.routes])
-            unassigned = json.dumps(self.unassigned)
-            summary = json.dumps(self.summary)
+            routes = [r.to_dict() for r in self.routes]
+            # unassigned = json.dumps(self.unassigned)
+            # summary = json.dumps(self.summary)
 
-            return json.dumps({"summary": summary, "routes": routes, "unassigned": unassigned})
+            return json.dumps({"routes": routes})
 
     @staticmethod
     def from_json(json_str: str):
