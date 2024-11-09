@@ -1,20 +1,42 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_flutter/Vehicle.dart';
 
-class Vehicles extends StatelessWidget {
+class VehiclesWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => VehiclesWidgetState();
+
+}
+
+class VehiclesWidgetState extends State<VehiclesWidget> {
+
+  late List<Vehicle> vehicles = testVehicles;
+  late List<bool> viewed = List.generate(testVehicles.length, (index) => true);
+
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: testVehicles.length,
-      itemBuilder: (context, index) {
-        return Card(
-          child: ListTile(
-          leading: Icon(Icons.car_crash),
-          title: Text("${testVehicles[index].id}"),
-        ),);
-      },
+    return SizedBox(
+        width: 200,
+        child: Card(
+          child: Column(
+            children: [
+              ...List.generate(vehicles.length, (index) {
+                return ListTile(
+                  leading: Icon(Icons.car_crash),
+                  title: Text("ID: ${vehicles[index].id}"),
+                  trailing: Checkbox(value: viewed[index], onChanged: (bool? value) {
+                    setState(() {
+                      viewed[index] = !viewed[index];
+                    });
+                    },),
+                );
+              })
+            ],
+          ),
+        ),
     );
   }
 }

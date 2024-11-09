@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:latlong2/latlong.dart';
 
 final List<Vehicle> testVehicles = [
@@ -51,7 +50,7 @@ class Vehicle {
 
   factory Vehicle.fromDict(Map<String, dynamic> data) => Vehicle(
     id: data['id'] as int,
-    startLocation: data['start_location'],
+    startLocation: LatLng(data['start_location'][0], data['start_location'][1]),
     capacityWalking: data['capacity_walking'] as int,
     capacityWheelchair: data['capacity_wheelchair'] as int,
     capacityStretcher: data['capacity_stretcher'] as int,
