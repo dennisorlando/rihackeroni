@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:frontend_flutter/Vehicle.dart';
 import 'package:frontend_flutter/VehiclesWidget.dart';
+import 'package:frontend_flutter/Request.dart';
 import 'package:frontend_flutter/dropdown_button.dart';
 import 'package:google_maps_polyline/google_maps_polyline.dart';
 import 'package:http/http.dart' as http;
@@ -16,7 +17,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 
-void main(), {
+void main() {
   runApp(const MyApp());
 }
 
@@ -51,6 +52,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   List<Polyline> polylineCoordinates = [];  // To store decoded polyline coordinates
   List<Vehicle> vehicles = [];
+  List<Request> requests = [];
 
   void update(){
     setState(() {});
@@ -63,15 +65,24 @@ class _MyHomePageState extends State<MyHomePage> {
     return jsonResponse.map((vehicle) => Vehicle.fromDict(vehicle)).toList();  // Map and convert to List<Vehicle>
   }
 
+  List<Request> loadRequestsFromJson(String filePath) {
+    final String jsonString = File(filePath).readAsStringSync();  // Synchronously read the file content
+    final List<dynamic> jsonResponse = json.decode(jsonString);
+
+    return jsonResponse.map((request) => Request.fromJson(request)).toList();  // Map and convert to List<Request>
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    final List<Vehicle> vehicles = testVehicles;
+    final List<Vehicle> vehicles = [];
+    final List<Request> requests = [];
 
     // URL to fetch the encoded polyline
     const String polylineUrl = 'http://10.69.0.2:5000';  // Replace with your actual URL
 
     this.vehicles = loadVehiclesFromJson("./vehicles.json");
+    this.requests = loadRequestsFromJson("./requests.json");
 
     // Function to fetch and decode the polyline
     Future<void> fetchAndDecodePolyline() async {
