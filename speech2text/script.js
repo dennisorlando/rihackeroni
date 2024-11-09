@@ -51,31 +51,11 @@ async function sendAudio(audioFile) {
             body: formData
         });
 
-        const result = await response.json();  // Parsing the response as JSON
+       const result = await response.json(); // Parsing della risposta come JSON
 
-        if (result.status === "incomplete") {
-            // Caso con chiavi mancanti
-            resultsDiv.innerHTML = `
-                <p>The following keys are missing: ${result.missing_keys.join(", ")}</p>
-                `;
-
-            if (result.audio) {
-                // Decodifica e carica l'audio nel player
-                const audioBlob = base64ToBlob(result.audio, "audio/mp3");
-                const audioURL = URL.createObjectURL(audioBlob);
-                audioPlayer.src = audioURL;
-                audioPlayer.style.display = "block"; // Mostra il player audio
-            }
-
-        } else if (result.status === "complete") {
-            // Caso con tutte le chiavi presenti
-            resultsDiv.innerHTML = `
-                <p>All keys are present.</p>
-                <pre>${JSON.stringify(result.data, null, 2)}</pre>
-                `;
-            audioPlayer.style.display = "none"; // Nascondi il player audio
+        if (result.status === "incomplete" || result.status === "complete") {
+            displayResults(result);
         }
-
     } catch (error) {
         console.error('Error sending audio:', error);
         statusText.textContent = "Error sending audio.";
@@ -95,4 +75,46 @@ function base64ToBlob(base64, mimeType) {
         byteArrays.push(new Uint8Array(byteNumbers));
     }
     return new Blob(byteArrays, { type: mimeType });
+}
+
+function displayResults(data) {
+    // Svuota il contenuto attuale di resultsDiv
+    resultsDiv.innerHTML = "";
+
+    // Ottieni il JSON completo dalla risposta
+    const fullJson = data.data;
+
+    // Genera dinamicamente input per ogni chiave del JSON
+    for (const [key, value] of Object.entries(fullJson)) {
+        const inputContainer = document.createElement('div');
+        inputContainer.classList.add('input-container');
+
+        const label = document.createElement('label');
+        label.textContent = key;
+
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = value || ""; // Lascia vuoti i campi mancanti
+
+        inputContainer.appendChild(label);
+        inputContainer.appendChild(input);
+        resultsDiv.appendChild(inputContainer);
+    }
+
+    // Visualizza i campi mancanti
+    if (data.missing_keys.length > 0) {
+        const missingMessage = document.createElement('p');
+        missingMessage.textContent = `Mancano i seguenti campi: ${data.missing_keys.join(', ')}`;
+        resultsDiv.appendChild(missingMessage);
+    }
+
+    // Mostra l'audio solo se incluso nella risposta
+    if (data.audio) {
+        const audioBlob = base64ToBlob(data.audio, "audio/mp3");
+        const audioURL = URL.createObjectURL(audioBlob);
+        audioPlayer.src = audioURL;
+        audioPlayer.style.display = "block"; // Mostra il player audio
+    } else {
+        audioPlayer.style.display = "none"; // Nascondi il player audio se non incluso
+    }
 }
