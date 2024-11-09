@@ -233,8 +233,9 @@ class Summary:
 
 
 class VroomOutput:
-    def __init__(self, code: int, summary: Summary, routes: List[Route], unassigned: Optional[List[dict]] = None):
+    def __init__(self, code: int, error: str, summary: Summary, routes: List[Route], unassigned: Optional[List[dict]] = None):
         self.code = code
+        self.error = error
         self.summary = summary
         self.routes = [Route.from_dict(r) for r in routes]
         self.unassigned = unassigned if unassigned else []
@@ -243,6 +244,7 @@ class VroomOutput:
     def from_dict(cls, data: dict):
         return cls(
             code=data["code"],
+            error=data["error"],
             summary=Summary.from_dict(data["summary"]),
             routes=data["routes"],
             unassigned=data.get("unassigned", [])
@@ -256,7 +258,6 @@ class VroomOutput:
             "unassigned": self.unassigned
         }
 
-    @classmethod
     def serialize_vroom_output(self):
         if self.code == 1:
             return json.dumps({"error": f"{self.error}"})
@@ -268,7 +269,9 @@ class VroomOutput:
             routes = json.dumps(self.routes)
             unassigned = json.dumps(self.unassigned)
             summary = json.dumps(self.summary)
-        
+
+            return json.dumps({"code": self.code, "error": self.error, "summary": summary, "routes": routes, "unassigned": unassigned})
+
 
     @staticmethod
     def from_json(json_str: str):
