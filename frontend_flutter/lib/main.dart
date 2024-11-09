@@ -28,6 +28,8 @@ List<Polyline> rendered_polylines = [];
 
 Map<int, VroomRoute> routes = {};
 
+late _MyHomePageState homepage;
+
 void main() {
   runApp(const MyApp());
 }
@@ -84,6 +86,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
+    homepage = this;
+
     // URL to fetch the encoded polyline
     const String polylineUrl = 'http://10.69.0.2:8000/routes';  // Replace with your actual URL
 
@@ -91,7 +95,10 @@ class _MyHomePageState extends State<MyHomePage> {
     requests = loadRequestsFromJson("./requests.json");
     //vehicles = loadVehiclesFromJson("./historic_vehicles.json");
     //requests = loadRequestsFromJson("./historic_requests.json");
-    vehicle_colors = vehicles.map((v) => Color((Random().nextDouble() * 0xFFFFFFFF).toInt())).toList();
+    vehicle_colors = vehicles.map((v) {
+      Random random = Random(v.id);
+      return Color.fromARGB(255, random.nextInt(255), random.nextInt(100), random.nextInt(255));
+    }).toList();
     markers = requests.map((r) {
       return Marker(
         height: 50,
@@ -114,8 +121,12 @@ class _MyHomePageState extends State<MyHomePage> {
     }));
     markers.addAll(vehicles.map((v) {
       return Marker(
+          height: 44.0,
           point: v.startLocation,
-          child: Icon(Icons.car_crash_rounded),
+          child: Column(children: [
+            Icon(Icons.car_crash_rounded),
+            Text("#${v.id}")
+          ],),
       );
     }));
 
@@ -133,7 +144,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
             body: jsonEncode(jsonData),
         );
-        print(response.body);
 
         if (response.statusCode == 200) {
           output = VroomOutput.fromJson(jsonDecode(response.body));
@@ -173,12 +183,14 @@ class _MyHomePageState extends State<MyHomePage> {
             right: 16,
             child: FloatingActionButton(
               onPressed: () {
-                setState(() async {
-                  await fetchAndDecodePolyline();
-                  rendered_polylines = routes.entries.map((r) {
-                    return r.value.geometry;
-                  }).toList();
-                  update();
+                fetchAndDecodePolyline().whenComplete(() {
+                  setState(() {
+                    fetchAndDecodePolyline();
+                    rendered_polylines = routes.entries.map((r) {
+                      return r.value.geometry;
+                    }).toList();
+                    update();
+                  });
                 });
               },
               child: Icon(Icons.sync),

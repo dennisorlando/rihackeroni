@@ -6,13 +6,15 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:latlong2/latlong.dart';
 
-Polyline fromString(String s){
+Polyline fromString(String s, int id){
   var points = PolylinePoints().decodePolyline(s);
+  Random random = Random(id);
   List<LatLng> yay = points.map((p) => LatLng(p.latitude, p.longitude)).toList();
   return Polyline(
       points: yay,
-      strokeWidth: 5.0,
-      color: Color((Random().nextDouble() * 0xFFFFFFFF).toInt())
+      strokeWidth: 3.0,
+      pattern: StrokePattern.dashed(segments: [10.0, 5.0]),
+      color: Color.fromARGB(255, random.nextInt(255), random.nextInt(100), random.nextInt(255))
   );
 }
 
@@ -52,10 +54,7 @@ class VroomRoute {
   // Factory constructor for creating a new Route instance from a map (JSON)
   factory VroomRoute.fromJson(Map<String, dynamic> json) {
 
-    print("uh?");
-    print(jsonEncode(json));
-    print("aaaaaaa");
-    Polyline geo = fromString(json['geometry']);
+    Polyline geo = fromString(json['geometry'], json['vehicle']);
 
     return VroomRoute(
       vehicle: json['vehicle'] as int,
