@@ -8,6 +8,7 @@ class Request {
   final LatLng pickupLocation;
   final LatLng destination;
   final int appointmentTime;
+  final bool isReturn;
 
   Request({
     required this.id,
@@ -15,6 +16,7 @@ class Request {
     required this.pickupLocation,
     required this.destination,
     required this.appointmentTime,
+    required this.isReturn,
   });
 
   // Factory constructor to create an instance from a JSON map
@@ -25,6 +27,7 @@ class Request {
       pickupLocation: LatLng(json['pickup_location'][1], json['pickup_location'][0]),
       destination: LatLng(json['destination'][1], json['destination'][0]),
       appointmentTime: json['appointment_time'],
+      isReturn: json['is_return'] ?? false,
     );
   }
 
@@ -36,6 +39,7 @@ class Request {
       'pickup_location': [pickupLocation.longitude, pickupLocation.latitude],
       'destination': [ destination.longitude, destination.latitude],
       'appointment_time': appointmentTime,
+      'is_return': isReturn,
     };
   }
 }

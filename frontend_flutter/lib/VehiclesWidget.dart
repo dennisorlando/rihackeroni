@@ -9,7 +9,6 @@ import 'main.dart';
 class VehiclesWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => VehiclesWidgetState();
-
 }
 
 class VehiclesWidgetState extends State<VehiclesWidget> {
@@ -25,6 +24,22 @@ class VehiclesWidgetState extends State<VehiclesWidget> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                ElevatedButton(
+                  onPressed: () {
+                    setState(() {
+                      for (int i = 0; i < viewed.length; i++) {
+                        viewed[i] = !viewed[i];
+                      }
+                      rendered_polylines = routes.entries.map((r) {
+                        return r.value.geometry;
+                      }).toList();
+                      homepage.setState(() {
+
+                      });
+                    });
+                  },
+                  child: Text("Toggle All"),
+                ),
                 ...List.generate(vehicles.length, (index) {
                   return ListTile(
                     leading: Icon(Icons.car_crash),

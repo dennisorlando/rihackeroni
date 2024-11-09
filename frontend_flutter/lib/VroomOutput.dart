@@ -145,7 +145,7 @@ class Step {
           ? List<double>.from(json['location'].map((loc) => loc as double))
           : null,
       locationIndex: json['location_index'] as int?,
-      taskId: json['task_id'] as int?,
+      taskId: json['id'] as int?,
       load: json['load'] != null ? List<int>.from(json['load']) : null,
       distance: json['distance'] as int?,
     );

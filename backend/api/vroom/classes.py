@@ -28,19 +28,20 @@ class Vehicle:
         return {
             "id": self.id,
             "start": self.start_location,
-            "end": self.start_location,
+            # "end": self.start_location,
             # "capacity": [self.capacity_walking, self.capacity_wheelchair, self.capacity_stretcher, self.capacity_white_cross]
-            "capacity": [1]
+            "capacity": [4],
         }
 
 
 class Request:
-    def __init__(self, id, accompanied, pickup_location, destination, appointment_time):
+    def __init__(self, id, accompanied, pickup_location, destination, appointment_time, is_return=None):
         self.id = id
         self.accompanied = accompanied
         self.pickup_location = pickup_location
         self.destination = destination
         self.appointment_time = appointment_time
+        self.is_return = is_return
 
     @classmethod
     def from_dict(cls, data: dict):
@@ -49,7 +50,8 @@ class Request:
             accompanied=data["accompanied"],
             pickup_location=data["pickup_location"],
             destination=data["destination"],
-            appointment_time=data["appointment_time"]
+            appointment_time=data["appointment_time"],
+            is_return=data.get("is_return", False)
         )
 
 # ======================================================================================================================

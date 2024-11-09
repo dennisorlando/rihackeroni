@@ -5,6 +5,7 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:frontend_flutter/Vehicle.dart';
+import 'package:frontend_flutter/VehiclesRoute.dart';
 import 'package:frontend_flutter/VehiclesWidget.dart';
 import 'package:frontend_flutter/Request.dart';
 import 'package:frontend_flutter/dropdown_button.dart';
@@ -108,7 +109,7 @@ class _MyHomePageState extends State<MyHomePage> {
         )
       );
     }).toList();
-    markers.addAll(requests.map((r) {
+    markers.addAll(requests.where((r) => !r.isReturn).map((r) {
       return Marker(
         point: r.destination,
         child: Stack(
@@ -197,7 +198,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           VehiclesWidget(),
-          LocationPickerWidget(),
+          RouteSelector(routes: output == null ? [] : output!.routes),
         ],
       ),
     );

@@ -1,50 +1,782 @@
 [
   {
+    "id": 0,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
     "id": 1,
     "start_location": [
-      10.54545313128176,
-      46.57978551215774
+      11.154385,
+      46.065608
     ],
-    "capacity_walking": 4,
-    "capacity_wheelchair": 2,
-    "capacity_stretcher": 1,
-    "capacity_white_cross": 1,
-    "max_capacity": 8
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
   },
   {
     "id": 2,
     "start_location": [
-      11.16901406777501,
-      46.669366505505536
+      11.154385,
+      46.065608
     ],
-    "capacity_walking": 3,
-    "capacity_wheelchair": 1,
-    "capacity_stretcher": 2,
-    "capacity_white_cross": 1,
-    "max_capacity": 7
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
   },
   {
     "id": 3,
     "start_location": [
-      10.552935906317515,
-      46.670864683875436
+      11.154385,
+      46.065608
     ],
-    "capacity_walking": 3,
-    "capacity_wheelchair": 1,
-    "capacity_stretcher": 2,
-    "capacity_white_cross": 1,
-    "max_capacity": 7
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
   },
   {
     "id": 4,
     "start_location": [
-      11.318638515268276,
-      46.48894814628525
+      11.154385,
+      46.065608
     ],
-    "capacity_walking": 3,
-    "capacity_wheelchair": 1,
-    "capacity_stretcher": 2,
-    "capacity_white_cross": 1,
-    "max_capacity": 7
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 5,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 6,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 7,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 8,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 9,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 10,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 11,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 12,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 13,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 14,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 15,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 16,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 17,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 18,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 19,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 20,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 21,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 22,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 23,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 24,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 25,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 26,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 27,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 28,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 29,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 30,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 31,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 32,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 33,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 34,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 35,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 36,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 37,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 38,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 39,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 40,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 41,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 42,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 43,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 44,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 45,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 46,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 47,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 48,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 49,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 50,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 51,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 52,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 53,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 54,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 55,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 56,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 57,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 58,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 59,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 60,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 61,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 62,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 63,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
+  },
+  {
+    "id": 64,
+    "start_location": [
+      11.154385,
+      46.065608
+    ],
+    "capacity_walking": 0,
+    "capacity_wheelchair": 0,
+    "capacity_stretcher": 0,
+    "capacity_white_cross": 0,
+    "max_capacity": 0
   }
 ]
