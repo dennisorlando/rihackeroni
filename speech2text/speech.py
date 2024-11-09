@@ -23,6 +23,12 @@ CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
 
+# show the index page in index.html
+@app.route("/")
+def index():
+    return app.send_static_file("index.html")
+
+
 # define a json, if the transcription doesnt contain one or more
 # of the key in the json, return an audio for the missing key(s)
 # use tts and a LLM to check if some of the key are missing
@@ -38,7 +44,7 @@ def validate_route():
     convert_to_mp3(os.path.join("uploads", audio.filename), os.path.join("uploads", "converted.mp3"))
     result = transcribe(os.path.join("uploads", "converted.mp3"))
 #    return jsonify({"message": "Transcription successful"}), 200
-    missing_keys, full_json = missing_keys(result)
+    missing_keys, full_json = missing_keys_function(result)
     if missing_keys:
         # Genera l'audio e crea il JSON per il caso con chiavi mancanti
         audio_base64 = generate_audio_for_missing_keys(missing_keys)
@@ -73,7 +79,7 @@ def convert_to_mp3(input_file, output_file):
         print("An error occurred during conversion:", e)
 
 
-def missing_keys(transcription):
+def missing_keys_function(transcription):
     expected_json = {
         "name": "",
         "surname": "",
@@ -96,7 +102,25 @@ def missing_keys(transcription):
         If only one key is missing, write the name of the key.
         If no keys are missing, write return the json with all the values.
     """
-    gemini_response = gemini_model.generate_content(prompt) 
+    safe = [
+      {
+          "category": "HARM_CATEGORY_HARASSMENT",
+          "threshold": "BLOCK_NONE",
+      },
+      {
+          "category": "HARM_CATEGORY_HATE_SPEECH",
+          "threshold": "BLOCK_NONE",
+      },
+      {
+          "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          "threshold": "BLOCK_NONE",
+      },
+      {
+          "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+          "threshold": "BLOCK_NONE",
+      },
+    ]
+    gemini_response = gemini_model.generate_content(prompt, safety_settings=safe) 
     response_text = gemini_response.text.strip()
 
     # Check if the response is the JSON (all keys are present) or a list of missing keys
@@ -123,6 +147,5 @@ def generate_audio_for_missing_keys(missing_keys):
     audio_io = BytesIO()
     tts.save(audio_io)
     audio_io.seek(0)
-    
     return audio_io
 
