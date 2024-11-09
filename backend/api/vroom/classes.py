@@ -28,7 +28,8 @@ class Vehicle:
             "id": self.id,
             "start": self.start_location,
             "end": self.start_location,
-            "capacity": [self.capacity_walking, self.capacity_wheelchair, self.capacity_stretcher, self.capacity_white_cross]
+            # "capacity": [self.capacity_walking, self.capacity_wheelchair, self.capacity_stretcher, self.capacity_white_cross]
+            "capacity": [1]
         }
 
 

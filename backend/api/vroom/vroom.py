@@ -39,5 +39,6 @@ class Calculation:
         print("Calculating route...")
         request = self.create_request()
 
-        response = r.get("http://vroom:5002", json=request)
+        # TODO: restore this to use internal serializer
+        response = r.post("http://vroom:3000", json=request)
         return VroomOutput.from_dict(response.json())
