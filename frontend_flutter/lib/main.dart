@@ -56,6 +56,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
+    final List<Vehicle> vehicles = testVehicles;
+
     // URL to fetch the encoded polyline
     const String polylineUrl = 'http://10.69.0.2:5000';  // Replace with your actual URL
 
@@ -126,8 +128,8 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Icon(Icons.sync),
             ),
           ),
-          LocationPickerWidget(),
-          Vehicles(),
+          VehiclesWidget(),
+          //LocationPickerWidget(),
         ],
       ),
     );
