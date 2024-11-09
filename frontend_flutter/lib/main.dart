@@ -15,8 +15,9 @@ import 'package:latlong2/latlong.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 
+List<Vehicle> vehicles = [];
 
-void main(), {
+void main() {
   runApp(const MyApp());
 }
 
@@ -50,7 +51,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   List<Polyline> polylineCoordinates = [];  // To store decoded polyline coordinates
-  List<Vehicle> vehicles = [];
 
   void update(){
     setState(() {});
@@ -66,12 +66,10 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
-    final List<Vehicle> vehicles = testVehicles;
-
     // URL to fetch the encoded polyline
     const String polylineUrl = 'http://10.69.0.2:5000';  // Replace with your actual URL
 
-    this.vehicles = loadVehiclesFromJson("./vehicles.json");
+    vehicles = loadVehiclesFromJson("./vehicles.json");
 
     // Function to fetch and decode the polyline
     Future<void> fetchAndDecodePolyline() async {

@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_flutter/Vehicle.dart';
 
+import 'main.dart';
+
 class VehiclesWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => VehiclesWidgetState();
@@ -12,8 +14,7 @@ class VehiclesWidget extends StatefulWidget {
 
 class VehiclesWidgetState extends State<VehiclesWidget> {
 
-  late List<Vehicle> vehicles = testVehicles;
-  late List<bool> viewed = List.generate(testVehicles.length, (index) => true);
+  final List<bool> viewed = List.generate(vehicles.length, (index) => true);
 
 
   @override
