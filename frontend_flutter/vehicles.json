@@ -1,7 +1,10 @@
 [
   {
     "id": 1,
-    "start_location": [11.154385, 46.065608],
+    "start_location": [
+      10.54545313128176,
+      46.57978551215774
+    ],
     "capacity_walking": 4,
     "capacity_wheelchair": 2,
     "capacity_stretcher": 1,
@@ -10,7 +13,34 @@
   },
   {
     "id": 2,
-    "start_location": [11.154385, 46.065608],
+    "start_location": [
+      11.16901406777501,
+      46.669366505505536
+    ],
+    "capacity_walking": 3,
+    "capacity_wheelchair": 1,
+    "capacity_stretcher": 2,
+    "capacity_white_cross": 1,
+    "max_capacity": 7
+  },
+  {
+    "id": 3,
+    "start_location": [
+      10.555698922991525,
+      46.67790389306799
+    ],
+    "capacity_walking": 3,
+    "capacity_wheelchair": 1,
+    "capacity_stretcher": 2,
+    "capacity_white_cross": 1,
+    "max_capacity": 7
+  },
+  {
+    "id": 3,
+    "start_location": [
+      11.318638515268276,
+      46.48894814628525
+    ],
     "capacity_walking": 3,
     "capacity_wheelchair": 1,
     "capacity_stretcher": 2,

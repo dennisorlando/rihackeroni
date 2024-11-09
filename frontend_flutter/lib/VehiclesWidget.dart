@@ -14,11 +14,11 @@ class VehiclesWidget extends StatefulWidget {
 
 class VehiclesWidgetState extends State<VehiclesWidget> {
 
-  final List<bool> viewed = List.generate(vehicles.length, (index) => true);
-
-
   @override
   Widget build(BuildContext context) {
+
+    final List<bool> viewed = List.generate(vehicles.length, (index) => true);
+
     return SizedBox(
         width: 200,
         child: Card(

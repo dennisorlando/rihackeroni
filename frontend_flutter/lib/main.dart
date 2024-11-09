@@ -32,8 +32,6 @@ void main() {
   runApp(const MyApp());
 }
 
-late _MyHomePageState homepage;
-
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
@@ -77,10 +75,14 @@ class _MyHomePageState extends State<MyHomePage> {
     return jsonResponse.map((request) => Request.fromJson(request)).toList();  // Map and convert to List<Request>
   }
 
+  void update() {
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-
-    homepage = this;
 
     // URL to fetch the encoded polyline
     const String polylineUrl = 'http://10.69.0.2:8000/routes';  // Replace with your actual URL
@@ -108,12 +110,6 @@ class _MyHomePageState extends State<MyHomePage> {
             Icon(Icons.local_hospital_outlined, size: 32.0, color: Colors.red),
           ],
         ),
-      );
-    }));
-    markers.addAll(vehicles.map((r) {
-      return Marker(
-          point: r.startLocation,
-          child: Column(children: [Icon(Icons.wheelchair_pickup)],),
       );
     }));
 
@@ -191,9 +187,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 setState(() {
                   fetchAndDecodePolyline();
-                  homepage.setState(() {
-
-                  });();
+                  update();
                 });
               },
               child: Icon(Icons.sync),
