@@ -82,6 +82,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
     vehicles = loadVehiclesFromJson("./vehicles.json");
     requests = loadRequestsFromJson("./requests.json");
+    //vehicles = loadVehiclesFromJson("./historic_vehicles.json");
+    //requests = loadRequestsFromJson("./historic_requests.json");
     vehicle_colors = vehicles.map((v) => Color((Random().nextDouble() * 0xFFFFFFFF).toInt())).toList();
     markers = requests.map((r) {
       return Marker(
@@ -101,6 +103,12 @@ class _MyHomePageState extends State<MyHomePage> {
             Icon(Icons.local_hospital_outlined, size: 32.0, color: Colors.red),
           ],
         ),
+      );
+    }));
+    markers.addAll(vehicles.map((r) {
+      return Marker(
+          point: r.startLocation,
+          child: Column(children: [Icon(Icons.wheelchair_pickup)],),
       );
     }));
 
