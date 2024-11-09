@@ -51,33 +51,11 @@ async function sendAudio(audioFile) {
             body: formData
         });
 
-        const result = await response.json();  // Parsing the response as JSON
+       const result = await response.json(); // Parsing della risposta come JSON
 
-
-        // Ottieni il contenitore dei campi
-        const fieldsContainer = document.getElementById('fieldsContainer');
-        fieldsContainer.innerHTML = ''; // Svuota il contenitore prima di riempirlo con nuovi dati
-
-        if (result.status === "incomplete") {
-            // Caso con chiavi mancanti
-            resultsDiv.innerHTML = `
-                <p>The following keys are missing: ${result.missing_keys.join(", ")}</p>
-                `;
-
-             displayFields(result.missing_keys, true); // Mostra i campi mancanti
-
-
-
-        } else if (result.status === "complete") {
-            // Caso con tutte le chiavi presenti
-            resultsDiv.innerHTML = `
-                <p>All keys are present.</p>
-                <pre>${JSON.stringify(result.data, null, 2)}</pre>
-                `;
-           displayFields(result.data, false); // Mostra i dati completi
+        if (result.status === "incomplete" || result.status === "complete") {
+            displayResults(result);
         }
- audioPlayer.style.display = "none"; 
-
     } catch (error) {
         console.error('Error sending audio:', error);
         statusText.textContent = "Error sending audio.";
@@ -99,32 +77,44 @@ function base64ToBlob(base64, mimeType) {
     return new Blob(byteArrays, { type: mimeType });
 }
 
-function displayFields(data, isMissing) {
-    const fieldsContainer = document.getElementById('fieldsContainer');
+function displayResults(data) {
+    // Svuota il contenuto attuale di resultsDiv
+    resultsDiv.innerHTML = "";
 
-    // Itera su ogni chiave nel dato ricevuto
-    for (let key in data) {
-        if (data.hasOwnProperty(key)) {
-            // Crea un box per ogni campo
-            const fieldWrapper = document.createElement('div');
-            fieldWrapper.classList.add('field-wrapper');
+    // Ottieni il JSON completo dalla risposta
+    const fullJson = data.data;
 
-            // Crea un label per il campo
-            const label = document.createElement('label');
-            label.setAttribute('for', key);
-            label.textContent = key;
+    // Genera dinamicamente input per ogni chiave del JSON
+    for (const [key, value] of Object.entries(fullJson)) {
+        const inputContainer = document.createElement('div');
+        inputContainer.classList.add('input-container');
 
-            // Crea un box di input (vuoto per i campi mancanti, compilato per i dati completi)
-            const input = document.createElement('input');
-            input.type = 'text';
-            input.id = key;
-            input.name = key;
-            input.value = isMissing ? '' : data[key]; // Se mancante, lascia il campo vuoto, altrimenti metti il valore
+        const label = document.createElement('label');
+        label.textContent = key;
 
-            // Aggiungi il label e l'input nel contenitore
-            fieldWrapper.appendChild(label);
-            fieldWrapper.appendChild(input);
-            fieldsContainer.appendChild(fieldWrapper);
-        }
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.value = value || ""; // Lascia vuoti i campi mancanti
+
+        inputContainer.appendChild(label);
+        inputContainer.appendChild(input);
+        resultsDiv.appendChild(inputContainer);
+    }
+
+    // Visualizza i campi mancanti
+    if (data.missing_keys.length > 0) {
+        const missingMessage = document.createElement('p');
+        missingMessage.textContent = `Mancano i seguenti campi: ${data.missing_keys.join(', ')}`;
+        resultsDiv.appendChild(missingMessage);
+    }
+
+    // Mostra l'audio solo se incluso nella risposta
+    if (data.audio) {
+        const audioBlob = base64ToBlob(data.audio, "audio/mp3");
+        const audioURL = URL.createObjectURL(audioBlob);
+        audioPlayer.src = audioURL;
+        audioPlayer.style.display = "block"; // Mostra il player audio
+    } else {
+        audioPlayer.style.display = "none"; // Nascondi il player audio se non incluso
     }
 }

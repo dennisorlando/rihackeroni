@@ -7,6 +7,7 @@ from io import BytesIO
 from flask_cors import CORS
 import subprocess
 import base64
+import json
 
 load_dotenv()
 
@@ -46,9 +47,9 @@ def validate_route():
     print(full_json)
 
     response = {
-        "status": "complete" if not missing_keys else "incomplete",
+        "status": "incomplete" if missing_keys else "complete",
         "missing_keys": missing_keys,
-        "data": full_json,
+        "data": full_json
     }
 
     return jsonify(response), 200
@@ -83,39 +84,20 @@ def missing_keys_function(transcription):
         "date": "",
         "destination": "",
         }
-    prompt = f"""
-        You are a helper that checks whether a transcription includes all the following details:
-        {list(expected_json.keys())}
-        The transcription is: "{transcription}"
     
-        Please check if all the possible values of the keys ('name', 'age', 'city') are mentioned in the transcription.
-        If any keys are missing, list them, with this syntax: if 'name' and 'city' are missing, write 'name, city'.
-        If only one key is missing, write the name of the key.
-        If no keys are missing, write return the json with all the values.
-        Remember to translate the keys given by the transcription from German to English if the transcription is in German.
-        Remember to translate the keys given by the transcription from Italian to English if the transcription is in Italian.
-        Example if a transcription says Meine Name ist John, the key 'name' is equivalent to 'Name' in German.
-        If the transcription is in Italian, and it says Il mio nome è John, the key 'name' is equivalent to John.
-        If the transcription is in German, and it says Ich wohne in Berlin, the key 'city' is equivalent to 'Berlin'.
-        For each missing key, list them exactly like this: 'name, city' if both are missing.
-        If all keys are present, just return 'all present'.
-        Return this structure
-        {
-                full_json: {
-                    \"name\": If given in the transcription,},
-                    \"surname\": If given in the transcription,
-                    \"fiscal_code\": If given in the transcription,
-                    \"address\": If given in the transcription,
-                    \"city\": If given in the transcription,
-                    \"zip\": If given in the transcription,
-                    \"appointment_time\": If given in the transcription,
-                    \"date\": If given in the transcription,
-                    \"destination\": If given in the transcription,
-                    },
-                missing_keys: If any keys are missing, list
-
-                }
+        # Prompt per ottenere un JSON con tutte le chiavi e i valori disponibili
+    prompt = f"""
+        Trasforma questa trascrizione in un JSON con le seguenti chiavi:
+        'name', 'surname', 'fiscal_code', 'address', 'city', 'zip', 'appointment_time', 'date', 'destination'.
+        
+        Se una chiave è presente nella trascrizione, inserisci il suo valore nel JSON; 
+        se manca, lascia il valore vuoto o come stringa vuota.
+        
+        Trascrizione: "{transcription}"
+        
+        Restituisci il JSON completo.
     """
+
     safe = [
       {
           "category": "HARM_CATEGORY_HARASSMENT",
@@ -144,14 +126,14 @@ def missing_keys_function(transcription):
 #        print("Missing keys detected:", response_text)
 #       return response_text.split(", "), None
 
-    missing_keys = []
-    if response_text == "all present":
-        full_json = expected_json.copy()  # Populate with the transcription values
-    else:
-        missing_keys = response_text.split(", ")
-        full_json = expected_json.copy()
-        for key in full_json.keys():
-            print(response_text)           
+      
+    # Trasformiamo il testo JSON di Gemini in un dizionario Python
+    try:
+            full_json = json.loads(response_text)
+    except:
+            full_json = {}
+    # Controlla per valori vuoti e crea una lista di chiavi mancanti
+    missing_keys = [key for key, value in full_json.items() if not value]
 
     return missing_keys, full_json
 
