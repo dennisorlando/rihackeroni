@@ -1,0 +1,84 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 540px;
+}
+
+.panel {
+    margin: 16px;
+    padding: 16px;
+    border-radius: 16px;
+    background-color: rgb(184, 211, 255);
+}
+
+body {
+    line-height: 1;
+    font-family: Inter, sans-serif;
+    background-color: rgb(76, 100, 242);
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+
+.microphone-button {
+    background-color: #ff4c4c; /* Rosso */
+    color: white;
+    border: none;
+    border-radius: 10%; /* Bottone tondo */
+    min-width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px; /* Dimensione icona */
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Ombra */
+    transition: background-color 0.3s ease; /* Effetto hover */
+    width: auto;
+}
+
+/* Colore diverso al passaggio del mouse */
+.microphone-button:hover {
+    background-color: #ff1a1a;
+}
+
+#start {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+img {
+    max-width: 80px;
+}
+
+h1 {
+    font-size: 20px;
+    text-transform: capitalize;
+}
+
+main {
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.centers{
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
