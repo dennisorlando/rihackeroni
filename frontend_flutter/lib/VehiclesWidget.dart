@@ -32,9 +32,11 @@ class VehiclesWidgetState extends State<VehiclesWidget> {
                     setState(() {
                       viewed[index] = !viewed[index];
                     });
-                    },),
+                    },
+                    activeColor: vehicle_colors[index],
+                  ),
                 );
-              })
+              }),
             ],
           ),
         ),

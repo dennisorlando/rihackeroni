@@ -22,8 +22,8 @@ class Request {
     return Request(
       id: json['id'],
       accompanied: json['accompanied'],
-      pickupLocation: LatLng(json['pickup_location'][0], json['pickup_location'][1]),
-      destination: LatLng(json['destination'][0], json['destination'][1]),
+      pickupLocation: LatLng(json['pickup_location'][1], json['pickup_location'][0]),
+      destination: LatLng(json['destination'][1], json['destination'][0]),
       appointmentTime: json['appointment_time'],
     );
   }
@@ -33,8 +33,8 @@ class Request {
     return {
       'id': id,
       'accompanied': accompanied,
-      'pickup_location': pickupLocation,
-      'destination': destination,
+      'pickup_location': [pickupLocation.longitude, pickupLocation.latitude],
+      'destination': [ destination.longitude, destination.latitude],
       'appointment_time': appointmentTime,
     };
   }

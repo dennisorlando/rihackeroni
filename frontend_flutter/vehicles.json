@@ -1,29 +1,20 @@
 [
   {
-    "id": 0,
-    "start_location": [11.142383863760358, 46.68177504064434],
-    "capacity_walking": 2,
-    "capacity_wheelchair": 1,
-    "capacity_stretcher": 1,
-    "capacity_white_cross": 1,
-    "max_capacity": 5
-  },
-  {
     "id": 1,
-    "start_location": [10.586088739685124, 46.52801287430344],
-    "capacity_walking": 2,
-    "capacity_wheelchair": 0,
+    "start_location": [11.154385, 46.065608],
+    "capacity_walking": 4,
+    "capacity_wheelchair": 2,
     "capacity_stretcher": 1,
     "capacity_white_cross": 1,
-    "max_capacity": 4
+    "max_capacity": 8
   },
   {
     "id": 2,
-    "start_location": [10.546965347622773, 46.68666775159264],
-    "capacity_walking": 2,
-    "capacity_wheelchair": 0,
-    "capacity_stretcher": 1,
+    "start_location": [11.154385, 46.065608],
+    "capacity_walking": 3,
+    "capacity_wheelchair": 1,
+    "capacity_stretcher": 2,
     "capacity_white_cross": 1,
-    "max_capacity": 4
+    "max_capacity": 7
   }
 ]

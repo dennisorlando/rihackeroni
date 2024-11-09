@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
@@ -17,6 +18,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:flutter/services.dart' show rootBundle;
 
 List<Vehicle> vehicles = [];
+List<Color> vehicle_colors = [];
+List<Request> requests = [];
+List<Marker> markers = [];
 
 void main() {
   runApp(const MyApp());
@@ -52,7 +56,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   List<Polyline> polylineCoordinates = [];  // To store decoded polyline coordinates
-  List<Request> requests = [];
 
   void update(){
     setState(() {});
@@ -76,15 +79,47 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     // URL to fetch the encoded polyline
-    const String polylineUrl = 'http://10.69.0.2:8000';  // Replace with your actual URL
+    const String polylineUrl = 'http://10.69.0.2:8000/routes';  // Replace with your actual URL
 
     vehicles = loadVehiclesFromJson("./vehicles.json");
-    this.requests = loadRequestsFromJson("./requests.json");
+    requests = loadRequestsFromJson("./requests.json");
+    vehicle_colors = vehicles.map((v) => Color((Random().nextDouble() * 0xFFFFFFFF).toInt())).toList();
+    markers = requests.map((r) {
+      return Marker(
+        point: r.pickupLocation,
+        child: Stack(
+          children: [Icon(Icons.emoji_people_rounded), Text("ID: ${r.id}")],
+        )
+      );
+    }).toList();
+    markers.addAll(requests.map((r) {
+      return Marker(
+        point: r.destination,
+        child: Stack(
+          children: [
+            Icon(Icons.square, size: 32.0, color: Colors.white),
+            Icon(Icons.local_hospital_outlined, size: 32.0, color: Colors.red),
+          ],
+        ),
+      );
+    }));
+
+    Map<String, dynamic> jsonData = {
+      'requests': requests,
+      'vehicles': vehicles,
+    };
 
     // Function to fetch and decode the polyline
     Future<void> fetchAndDecodePolyline() async {
+
       try {
-        final response = await http.get(Uri.parse(polylineUrl));
+        final response = await http.post(
+            Uri.parse(polylineUrl),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(jsonData),
+        );
 
         if (response.statusCode == 200) {
 
@@ -102,11 +137,15 @@ class _MyHomePageState extends State<MyHomePage> {
               points: line,
               strokeWidth: 2.0,
               color: Color(0xFF0000FF),
+              pattern: StrokePattern.dotted(),
             );
           }).toList();
 
           // Update the UI with the decoded coordinates
           polylineCoordinates = polylines;
+        }
+        else {
+          print(response.body);
         }
       } catch (e) {
         throw e;
@@ -123,7 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: [
           FlutterMap(
-            options: MapOptions(
+            options: const MapOptions(
               initialCenter: LatLng(46.6695547, 11.1594185),
               initialZoom: 9.2,
             ),
@@ -133,6 +172,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 userAgentPackageName: 'noi.rihackeroni.techpark',
               ),
               PolylineLayer(polylines: polylineCoordinates),
+              MarkerLayer(markers: markers),
             ],
           ),
           Positioned(
