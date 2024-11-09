@@ -52,7 +52,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
 
   List<Polyline> polylineCoordinates = [];  // To store decoded polyline coordinates
-  List<Vehicle> vehicles = [];
   List<Request> requests = [];
 
   void update(){
@@ -77,10 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
 
     // URL to fetch the encoded polyline
-    const String polylineUrl = 'http://10.69.0.2:5000';  // Replace with your actual URL
+    const String polylineUrl = 'http://10.69.0.2:8000';  // Replace with your actual URL
 
     vehicles = loadVehiclesFromJson("./vehicles.json");
-    this.vehicles = loadVehiclesFromJson("./vehicles.json");
     this.requests = loadRequestsFromJson("./requests.json");
 
     // Function to fetch and decode the polyline
