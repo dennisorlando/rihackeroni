@@ -40,6 +40,7 @@ dependencies:
   flutter_map_geojson: ^1.0.8
   google_maps_polyline: ^1.0.3
   flutter_polyline_points: ^2.1.0
+  flutter_svg: ^2.0.14
 
 dev_dependencies:
   flutter_test:

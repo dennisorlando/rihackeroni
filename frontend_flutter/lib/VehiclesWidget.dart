@@ -4,6 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_flutter/Vehicle.dart';
 
+import 'main.dart';
+
 class VehiclesWidget extends StatefulWidget {
   @override
   State<StatefulWidget> createState() => VehiclesWidgetState();
@@ -12,12 +14,11 @@ class VehiclesWidget extends StatefulWidget {
 
 class VehiclesWidgetState extends State<VehiclesWidget> {
 
-  late List<Vehicle> vehicles = testVehicles;
-  late List<bool> viewed = List.generate(testVehicles.length, (index) => true);
-
-
   @override
   Widget build(BuildContext context) {
+
+    final List<bool> viewed = List.generate(vehicles.length, (index) => true);
+
     return SizedBox(
         width: 200,
         child: Card(
@@ -31,9 +32,11 @@ class VehiclesWidgetState extends State<VehiclesWidget> {
                     setState(() {
                       viewed[index] = !viewed[index];
                     });
-                    },),
+                    },
+                    activeColor: vehicle_colors[index],
+                  ),
                 );
-              })
+              }),
             ],
           ),
         ),

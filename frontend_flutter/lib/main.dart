@@ -1,10 +1,12 @@
 import 'dart:convert';
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_polyline_points/flutter_polyline_points.dart';
 import 'package:frontend_flutter/Vehicle.dart';
 import 'package:frontend_flutter/VehiclesWidget.dart';
+import 'package:frontend_flutter/Request.dart';
 import 'package:frontend_flutter/dropdown_button.dart';
 import 'package:google_maps_polyline/google_maps_polyline.dart';
 import 'package:http/http.dart' as http;
@@ -15,8 +17,18 @@ import 'package:latlong2/latlong.dart';
 
 import 'package:flutter/services.dart' show rootBundle;
 
+import 'VroomOutput.dart';
 
-void main(), {
+List<Vehicle> vehicles = [];
+List<Color> vehicle_colors = [];
+List<Request> requests = [];
+List<Marker> markers = [];
+VroomOutput ?output;
+List<Polyline> rendered_polylines = [];
+
+Map<int, VroomRoute> routes = {};
+
+void main() {
   runApp(const MyApp());
 }
 
@@ -49,13 +61,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  List<Polyline> polylineCoordinates = [];  // To store decoded polyline coordinates
-  List<Vehicle> vehicles = [];
-
-  void update(){
-    setState(() {});
-  }
-
   List<Vehicle> loadVehiclesFromJson(String filePath) {
     final String jsonString = File(filePath).readAsStringSync();  // Synchronously read the file content
     final List<dynamic> jsonResponse = json.decode(jsonString);
@@ -63,47 +68,82 @@ class _MyHomePageState extends State<MyHomePage> {
     return jsonResponse.map((vehicle) => Vehicle.fromDict(vehicle)).toList();  // Map and convert to List<Vehicle>
   }
 
+  List<Request> loadRequestsFromJson(String filePath) {
+    final String jsonString = File(filePath).readAsStringSync();  // Synchronously read the file content
+    final List<dynamic> jsonResponse = json.decode(jsonString);
+
+    return jsonResponse.map((request) => Request.fromJson(request)).toList();  // Map and convert to List<Request>
+  }
+
+  void update() {
+    setState(() {
+
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
 
-    final List<Vehicle> vehicles = testVehicles;
-
     // URL to fetch the encoded polyline
-    const String polylineUrl = 'http://10.69.0.2:5000';  // Replace with your actual URL
+    const String polylineUrl = 'http://10.69.0.2:8000/routes';  // Replace with your actual URL
 
-    this.vehicles = loadVehiclesFromJson("./vehicles.json");
+    vehicles = loadVehiclesFromJson("./vehicles.json");
+    requests = loadRequestsFromJson("./requests.json");
+    //vehicles = loadVehiclesFromJson("./historic_vehicles.json");
+    //requests = loadRequestsFromJson("./historic_requests.json");
+    vehicle_colors = vehicles.map((v) => Color((Random().nextDouble() * 0xFFFFFFFF).toInt())).toList();
+    markers = requests.map((r) {
+      return Marker(
+        height: 50,
+        point: r.pickupLocation,
+        child: Column(
+          children: [ Icon(Icons.emoji_people_rounded, size: 16.0,), Text("#${r.id}")],
+        )
+      );
+    }).toList();
+    markers.addAll(requests.map((r) {
+      return Marker(
+        point: r.destination,
+        child: Stack(
+          children: [
+            Icon(Icons.square, size: 32.0, color: Colors.white),
+            Icon(Icons.local_hospital_outlined, size: 32.0, color: Colors.red),
+          ],
+        ),
+      );
+    }));
+    markers.addAll(vehicles.map((v) {
+      return Marker(
+          point: v.startLocation,
+          child: Icon(Icons.car_crash_rounded),
+      );
+    }));
+
+    Map<String, dynamic> jsonData = {
+      'requests': requests,
+      'vehicles': vehicles,
+    };
 
     // Function to fetch and decode the polyline
     Future<void> fetchAndDecodePolyline() async {
-      try {
-        final response = await http.get(Uri.parse(polylineUrl));
+        final response = await http.post(
+            Uri.parse(polylineUrl),
+            headers: <String, String>{
+              'Content-Type': 'application/json; charset=UTF-8',
+            },
+            body: jsonEncode(jsonData),
+        );
+        print(response.body);
 
         if (response.statusCode == 200) {
+          output = VroomOutput.fromJson(jsonDecode(response.body));
 
-          List<String> geometries = List<String>.from(
-            jsonDecode(response.body)['routes'].map((route) => route['geometry'])
-          );
-          List<List<LatLng>> lines = geometries.map((geo) {
-            List<LatLng> coord = PolylinePoints().decodePolyline(geo).map((e) {
-              return LatLng(e.latitude, e.longitude);
-            }).toList();
-            return coord;
-          }).toList();
-          List<Polyline> polylines = lines.map((line) {
-            return Polyline(
-              points: line,
-              strokeWidth: 2.0,
-              color: Color(0xFF0000FF),
-            );
-          }).toList();
+          routes = {for (var route in output!.routes) route.vehicle: route};
 
-          // Update the UI with the decoded coordinates
-          polylineCoordinates = polylines;
         }
-      } catch (e) {
-        throw e;
-        print('Error fetching polyline data: $e');
-      }
+        else {
+          // print(response.body);
+        }
     }
 
 
@@ -115,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Stack(
         children: [
           FlutterMap(
-            options: MapOptions(
+            options: const MapOptions(
               initialCenter: LatLng(46.6695547, 11.1594185),
               initialZoom: 9.2,
             ),
@@ -124,7 +164,8 @@ class _MyHomePageState extends State<MyHomePage> {
                 urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                 userAgentPackageName: 'noi.rihackeroni.techpark',
               ),
-              PolylineLayer(polylines: polylineCoordinates),
+              PolylineLayer(polylines: rendered_polylines),
+              MarkerLayer(markers: markers),
             ],
           ),
           Positioned(
@@ -132,8 +173,11 @@ class _MyHomePageState extends State<MyHomePage> {
             right: 16,
             child: FloatingActionButton(
               onPressed: () {
-                setState(() {
-                  fetchAndDecodePolyline();
+                setState(() async {
+                  await fetchAndDecodePolyline();
+                  rendered_polylines = routes.entries.map((r) {
+                    return r.value.geometry;
+                  }).toList();
                   update();
                 });
               },
