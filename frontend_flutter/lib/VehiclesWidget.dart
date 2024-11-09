@@ -22,28 +22,30 @@ class VehiclesWidgetState extends State<VehiclesWidget> {
     return SizedBox(
         width: 200,
         child: Card(
-          child: Column(
-            children: [
-              ...List.generate(vehicles.length, (index) {
-                return ListTile(
-                  leading: Icon(Icons.car_crash),
-                  title: Text("ID: ${vehicles[index].id}"),
-                  trailing: Checkbox(value: viewed[index], onChanged: (bool? value) {
-                    setState(() {
-                      viewed[index] = !viewed[index];
-                      rendered_polylines = routes.entries.where((v) => viewed[v.key-1]).map((r) {
-                        return r.value.geometry;
-                      }).toList();
-                      homepage.setState(() {
-                        
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                ...List.generate(vehicles.length, (index) {
+                  return ListTile(
+                    leading: Icon(Icons.car_crash),
+                    title: Text("ID: ${vehicles[index].id}"),
+                    trailing: Checkbox(value: viewed[index], onChanged: (bool? value) {
+                      setState(() {
+                        viewed[index] = !viewed[index];
+                        rendered_polylines = routes.entries.where((v) => viewed[v.key]).map((r) {
+                          return r.value.geometry;
+                        }).toList();
+                        homepage.setState(() {
+
+                        });
                       });
-                    });
                     },
-                    activeColor: vehicle_colors[index],
-                  ),
-                );
-              }),
-            ],
+                      activeColor: vehicle_colors[index],
+                    ),
+                  );
+                }),
+              ],
+            ),
           ),
         ),
     );

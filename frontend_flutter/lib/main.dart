@@ -91,17 +91,17 @@ class _MyHomePageState extends State<MyHomePage> {
     // URL to fetch the encoded polyline
     const String polylineUrl = 'http://10.69.0.2:8000/routes';  // Replace with your actual URL
 
-    vehicles = loadVehiclesFromJson("./vehicles.json");
-    requests = loadRequestsFromJson("./requests.json");
-    //vehicles = loadVehiclesFromJson("./historic_vehicles.json");
-    //requests = loadRequestsFromJson("./historic_requests.json");
+    //vehicles = loadVehiclesFromJson("./vehicles.json");
+    //requests = loadRequestsFromJson("./requests.json");
+    vehicles = loadVehiclesFromJson("./historic_vehicles.json");
+    requests = loadRequestsFromJson("./historic_requests.json");
     vehicle_colors = vehicles.map((v) {
       Random random = Random(v.id);
       return Color.fromARGB(255, random.nextInt(255), random.nextInt(100), random.nextInt(255));
     }).toList();
     markers = requests.map((r) {
       return Marker(
-        height: 50,
+        height: 60,
         point: r.pickupLocation,
         child: Column(
           children: [ Icon(Icons.emoji_people_rounded, size: 16.0,), Text("#${r.id}")],
@@ -113,8 +113,8 @@ class _MyHomePageState extends State<MyHomePage> {
         point: r.destination,
         child: Stack(
           children: [
-            Icon(Icons.square, size: 32.0, color: Colors.white),
-            Icon(Icons.local_hospital_outlined, size: 32.0, color: Colors.red),
+            Icon(Icons.square, size: 16.0, color: Colors.white),
+            Icon(Icons.local_hospital_outlined, size: 16.0, color: Colors.red),
           ],
         ),
       );
@@ -197,7 +197,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
           VehiclesWidget(),
-          //LocationPickerWidget(),
+          LocationPickerWidget(),
         ],
       ),
     );
