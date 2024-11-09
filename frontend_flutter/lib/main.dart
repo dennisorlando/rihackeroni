@@ -21,10 +21,13 @@ List<Vehicle> vehicles = [];
 List<Color> vehicle_colors = [];
 List<Request> requests = [];
 List<Marker> markers = [];
+List<Polyline> polylineCoordinates = [];
 
 void main() {
   runApp(const MyApp());
 }
+
+late Function updateMap;
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -55,12 +58,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  List<Polyline> polylineCoordinates = [];  // To store decoded polyline coordinates
-
-  void update(){
-    setState(() {});
-  }
-
   List<Vehicle> loadVehiclesFromJson(String filePath) {
     final String jsonString = File(filePath).readAsStringSync();  // Synchronously read the file content
     final List<dynamic> jsonResponse = json.decode(jsonString);
@@ -78,6 +75,8 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
 
+    updateMap = setState;
+
     // URL to fetch the encoded polyline
     const String polylineUrl = 'http://10.69.0.2:8000/routes';  // Replace with your actual URL
 
@@ -86,9 +85,10 @@ class _MyHomePageState extends State<MyHomePage> {
     vehicle_colors = vehicles.map((v) => Color((Random().nextDouble() * 0xFFFFFFFF).toInt())).toList();
     markers = requests.map((r) {
       return Marker(
+        height: 50,
         point: r.pickupLocation,
-        child: Stack(
-          children: [Icon(Icons.emoji_people_rounded), Text("ID: ${r.id}")],
+        child: Column(
+          children: [ Icon(Icons.emoji_people_rounded, size: 16.0,), Text("#${r.id}")],
         )
       );
     }).toList();
@@ -182,7 +182,7 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 setState(() {
                   fetchAndDecodePolyline();
-                  update();
+                  updateMap();
                 });
               },
               child: Icon(Icons.sync),
